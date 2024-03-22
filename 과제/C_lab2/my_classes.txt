@@ -1,0 +1,6 @@
+My Classes
+1. [101] C [credit 3 - A+~F]
+2. [309] ComputerVision [credit 3 - A+~F]
+3. [210] SocialService [credit 2 - A+~F]
+4. [202] ComputerArchitecture [credit 2 - A+~F]
+All : 4 classes, 10 credits (A+~F 10 credits, P/F 0 credits)
