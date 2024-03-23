@@ -215,7 +215,26 @@ int deleteChannel(struct st_channel* c[], int size){
 	int no, yesno;
 	printf("> Delete a new Channel\n");
 	printf("> Enter a number of channel > ");
-
+	int number = 0;
+	scanf("%d",&number);
+	if(number>size){
+		printf("> Wrong number.\n");
+	}
+	else{
+		number -= 1;
+		printf("> Channel Info.\n");
+		printf("[%2d] %-20s %10d peoples [%s] \n",number+1, c[number]->name, c[number]->count,LNAME[c[number]->level]);
+		printf("> Do you want to delete the channel? (1:Yes 0:No) > ");
+		scanf("%d", &yesno);
+		if(yesno == 0) printf("> Canceled.\n");
+		else if(yesno == 1){
+			strcpy(c[number]->name,c[size-1]->name);
+			c[number]->level = c[size-1]->level;
+			c[number]->count = c[size-1]->count;
+			size -= 1;
+			printf("> Channel is deleted.\n");
+		}
+	}
 	return size;
 }
 
