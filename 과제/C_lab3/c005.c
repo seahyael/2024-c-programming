@@ -122,20 +122,18 @@ int addChannel(struct st_channel* c[], int size){
 
 void printStatistics(struct st_channel* c[], int size){
 	printf("> Statistics of Channels\n");
-    //모든 채널 정보에 대해 5개 등급별 채널개수와 평균 구독자수,
-    //최대 구독자수를 가진 채널명,구독자수를 출력한다
     int i = 0, j = 0;
     float sum[5] = {}, average[5] = {};
 	int coun[5] = {}, top[5] = {}, topName[5] = {};
     for(j = 0; j<size; j++){
         for(i = 0; i<5; i++){
             if(c[j]->level == i){
-                coun[i]++;
-                sum[i] += c[j]->count;
+                coun[i]++;//count channel number
+                sum[i] += c[j]->count;//total of peoples in a level
             }
 			if(c[j]->count>top[i] && c[j]->level == i){
-				top[i] = c[j]->count;
-				topName[i] = j;
+				top[i] = c[j]->count;//top channel's size
+				topName[i] = j;//top channel's name
 			}
         }
     }
@@ -150,11 +148,15 @@ void printStatistics(struct st_channel* c[], int size){
 void pickupRandomChannels(struct st_channel* c[], int size){
 	printf("> Pick up Channels\n");
 	printf("> How much channels you want to pick up? > ");
-
-
-
-
+	int num = 0, ran = 0;
+	scanf("%d",&num);
+	for(int i = 0; i<num; i++){
+		ran = rand() % size;
+		printf("[%d] %s (%s level, %d peoples)"
+				, ran, c[ran]->name, LNAME[c[ran]->level], c[ran]->count);
+	}
 }
+
 void searchChannel(struct st_channel* c[], int size){
 	printf("> Search Channels\n");
 	printf("> Choose one (1:by peoples 2:by names) > ");
