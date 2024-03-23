@@ -152,10 +152,10 @@ void pickupRandomChannels(struct st_channel* c[], int size){
 	printf("> How much channels you want to pick up? > ");
 	int num = 0, ran = 0;
 	scanf("%d",&num);
-	for(int i = 0; i<num; i++){
-		ran = rand() % size;
+	for(int i = 0; i<num; i++){//for size of num
+		ran = rand() % size;//make random number
 		printf("[%d] %s (%s level, %d peoples)\n"
-				, ran+1, c[ran]->name, LNAME[c[ran]->level], c[ran]->count);
+				, ran+1, c[ran]->name, LNAME[c[ran]->level], c[ran]->count);//print
 	}
 }
 
@@ -171,8 +171,8 @@ void searchChannel(struct st_channel* c[], int size){
 		scanf("%d %d", &from, &to);
 		printf("> Result:\n");
 		for(int i = 0; i<size; i++){
-			if(c[i]->count >= from && c[i]->count <=to){
-				coun ++;
+			if(c[i]->count >= from && c[i]->count <=to){//channels which are in range
+				coun ++;//total number
 				printf("[%2d] %-20s %10d peoples [%s] \n",i+1, c[i]->name, c[i]->count,LNAME[c[i]->level]);
 			}
 		}
@@ -183,7 +183,7 @@ void searchChannel(struct st_channel* c[], int size){
 		scanf("%s",names);
 		printf("> Result:\n");
 		for(int i = 0; i<size; i++){
-			if(strstr(c[i]->name, names) != NULL){
+			if(strstr(c[i]->name, names) != NULL){//channels which inculde names
 				coun ++;
 				printf("[%2d] %-20s %10d peoples [%s] \n",i+1, c[i]->name, c[i]->count,LNAME[c[i]->level]);
 			}
@@ -197,7 +197,7 @@ void updateChannel(struct st_channel* c[], int size){
 	printf("> Enter a number of channel > ");
 	int number = 0;
 	scanf("%d",&number);
-	if(number>size){
+	if(number>size){//out of raange
 		printf("> Wrong number.\n");
 	}
 	else{
@@ -205,10 +205,10 @@ void updateChannel(struct st_channel* c[], int size){
 		printf("> Channel Info.\n");
 		printf("[%2d] %-20s %10d peoples [%s] \n",number+1, c[number]->name, c[number]->count,LNAME[c[number]->level]);
 		printf("> Enter a new name of channel > ");
-		scanf("%s", c[number]->name);
+		scanf("%s", c[number]->name);//new name
 		printf("> Enter a new amount of peoples > ");
-		scanf("%d",&c[number]->count);
-		c[number]->level = findLevel(c[number]->count);
+		scanf("%d",&c[number]->count);//new count
+		c[number]->level = findLevel(c[number]->count);//new level
 		printf("> Channel info. is modified.\n");
 	}
 }
@@ -228,9 +228,9 @@ int deleteChannel(struct st_channel* c[], int size){
 		printf("[%2d] %-20s %10d peoples [%s] \n",number+1, c[number]->name, c[number]->count,LNAME[c[number]->level]);
 		printf("> Do you want to delete the channel? (1:Yes 0:No) > ");
 		scanf("%d", &yesno);
-		if(yesno == 0) printf("> Canceled.\n");
-		else if(yesno == 1){
-			strcpy(c[number]->name,c[size-1]->name);
+		if(yesno == 0) printf("> Canceled.\n");//in case no
+		else if(yesno == 1){//in case yes
+			strcpy(c[number]->name,c[size-1]->name);//put last channel into channel number
 			c[number]->level = c[size-1]->level;
 			c[number]->count = c[size-1]->count;
 			size -= 1;
@@ -242,20 +242,20 @@ int deleteChannel(struct st_channel* c[], int size){
 
 
 void makeReport(struct st_channel* c[], int size){
-	saveChannels(c,size);
+	saveChannels(c,size);//channels.txt
 	printf("> All information of channels are saved into channels.txt.\n");
-	saveReport(c,size);
+	saveReport(c,size);//text.txt
 	printf("> Channel Statistics are saved into report.txt.\n");
 }
 
 void saveReport(struct st_channel* c[], int size){
 	FILE* file;
 	file = fopen("report.txt", "w");
-	fprintf(file,"Channel List\n");
+	fprintf(file,"Channel List\n");//[1]
 	for(int i=0; i<size; i++){
 		fprintf(file,"[%2d] %-20s %10d peoples [%s] \n",i+1, c[i]->name, c[i]->count,LNAME[c[i]->level]);
 	}
-	fprintf(file,"Statistics of Channels");
+	fprintf(file,"Statistics of Channels");//[2]
 	int i = 0, j = 0;
     float sum[5] = {}, average[5] = {};
 	int coun[5] = {}, top[5] = {}, topName[5] = {};
@@ -282,7 +282,7 @@ void saveReport(struct st_channel* c[], int size){
 
 void saveChannels(struct st_channel* c[], int size){
 	FILE* file;
-	file = fopen("channels.txt", "w");
+	file = fopen("channels.txt", "w");//updated channels
 	for(int i=0; i<size; i++){
 		fprintf(file, "%s %d\n",c[i]->name, c[i]->count);
 	}
