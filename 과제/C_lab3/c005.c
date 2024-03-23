@@ -242,6 +242,7 @@ int deleteChannel(struct st_channel* c[], int size){
 
 
 void makeReport(struct st_channel* c[], int size){
+	saveChannels(c,size);
 	printf("> All information of channels are saved into channels.txt.\n");
 	saveReport(c,size);
 	printf("> Channel Statistics are saved into report.txt.\n");
@@ -280,5 +281,10 @@ void saveReport(struct st_channel* c[], int size){
 }
 
 void saveChannels(struct st_channel* c[], int size){
-
+	FILE* file;
+	file = fopen("channels.txt", "w");
+	for(int i=0; i<size; i++){
+		fprintf(file, "%s %d\n",c[i]->name, c[i]->count);
+	}
+	fclose(file);	
 }
