@@ -26,6 +26,8 @@ int addChannel(struct st_channel* c[], int size);
 void updateChannel(struct st_channel* c[], int size);
 int deleteChannel(struct st_channel* c[], int size);
 void makeReport(struct st_channel* c[], int size); 
+void saveChannels(struct st_channel* c[], int size);
+void saveReport(struct st_channel* c[], int size);
 
 int main(void) {
 	int no;	// amount of channels
@@ -240,6 +242,43 @@ int deleteChannel(struct st_channel* c[], int size){
 
 
 void makeReport(struct st_channel* c[], int size){
+	printf("> All information of channels are saved into channels.txt.\n");
+	saveReport(c,size);
+	printf("> Channel Statistics are saved into report.txt.\n");
+}
 
+void saveReport(struct st_channel* c[], int size){
+	FILE* file;
+	file = fopen("report.txt", "w");
+	fprintf(file,"Channel List\n");
+	for(int i=0; i<size; i++){
+		fprintf(file,"[%2d] %-20s %10d peoples [%s] \n",i+1, c[i]->name, c[i]->count,LNAME[c[i]->level]);
+	}
+	fprintf(file,"Statistics of Channels");
+	int i = 0, j = 0;
+    float sum[5] = {}, average[5] = {};
+	int coun[5] = {}, top[5] = {}, topName[5] = {};
+    for(j = 0; j<size; j++){
+        for(i = 0; i<5; i++){
+            if(c[j]->level == i){
+                coun[i]++;//count channel number
+                sum[i] += c[j]->count;//total of peoples in a level
+            }
+			if(c[j]->count>top[i] && c[j]->level == i){
+				top[i] = c[j]->count;//top channel's size
+				topName[i] = j;//top channel's name
+			}
+        }
+    }
+    
+    for(i = 0; i<5; i++){
+		average[i] = sum[i]/coun[i];
+        fprintf(file, "%s : %d channels. Average %.1f peoples. Top channel : %s (%d peoples)\n"
+                ,LNAME[i],coun[i],average[i],c[topName[i]]->name,c[topName[i]]->count);
+    }
+	fclose(file);	
+}
+
+void saveChannels(struct st_channel* c[], int size){
 
 }
