@@ -206,6 +206,7 @@ void updateChannel(struct st_channel* c[], int size){
 		scanf("%s", c[number]->name);
 		printf("> Enter a new amount of peoples > ");
 		scanf("%d",&c[number]->count);
+		c[number]->level = findLevel(c[number]->count);
 		printf("> Channel info. is modified.\n");
 	}
 }
