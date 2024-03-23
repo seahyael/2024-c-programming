@@ -193,8 +193,21 @@ void searchChannel(struct st_channel* c[], int size){
 void updateChannel(struct st_channel* c[], int size){
 	printf("> Modify a new Channel\n");
 	printf("> Enter a number of channel > ");
-
-
+	int number = 0;
+	scanf("%d",&number);
+	if(number>size){
+		printf("> Wrong number.\n");
+	}
+	else{
+		number -= 1;
+		printf("> Channel Info.\n");
+		printf("[%2d] %-20s %10d peoples [%s] \n",number+1, c[number]->name, c[number]->count,LNAME[c[number]->level]);
+		printf("> Enter a new name of channel > ");
+		scanf("%s", c[number]->name);
+		printf("> Enter a new amount of peoples > ");
+		scanf("%d",&c[number]->count);
+		printf("> Channel info. is modified.\n");
+	}
 }
 
 int deleteChannel(struct st_channel* c[], int size){
