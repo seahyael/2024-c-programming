@@ -152,8 +152,8 @@ void pickupRandomChannels(struct st_channel* c[], int size){
 	scanf("%d",&num);
 	for(int i = 0; i<num; i++){
 		ran = rand() % size;
-		printf("[%d] %s (%s level, %d peoples)"
-				, ran, c[ran]->name, LNAME[c[ran]->level], c[ran]->count);
+		printf("[%d] %s (%s level, %d peoples)\n"
+				, ran+1, c[ran]->name, LNAME[c[ran]->level], c[ran]->count);
 	}
 }
 
