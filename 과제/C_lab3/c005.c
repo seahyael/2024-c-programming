@@ -160,11 +160,34 @@ void pickupRandomChannels(struct st_channel* c[], int size){
 void searchChannel(struct st_channel* c[], int size){
 	printf("> Search Channels\n");
 	printf("> Choose one (1:by peoples 2:by names) > ");
-
-
-
-
-
+	int choose = 0;
+	int from = 0, to = 0, coun = 0;
+	char names[1000];
+	scanf("%d",&choose);
+	if(choose == 1){
+		printf("> Enter the range of peoples (from ~ to) > ");
+		scanf("%d %d", &from, &to);
+		printf("> Result:\n");
+		for(int i = 0; i<size; i++){
+			if(c[i]->count >= from && c[i]->count <=to){
+				coun ++;
+				printf("[%2d] %-20s %10d peoples [%s] \n",i+1, c[i]->name, c[i]->count,LNAME[c[i]->level]);
+			}
+		}
+		printf("> %d channels are found.\n",coun);
+	}
+	else if(choose == 2){
+		printf("> Enter a names > ");
+		scanf("%s",names);
+		printf("> Result:\n");
+		for(int i = 0; i<size; i++){
+			if(strstr(c[i]->name, names) != NULL){
+				coun ++;
+				printf("[%2d] %-20s %10d peoples [%s] \n",i+1, c[i]->name, c[i]->count,LNAME[c[i]->level]);
+			}
+		}
+		printf("> %d channels are found.\n",coun);
+	}
 }
 
 void updateChannel(struct st_channel* c[], int size){
