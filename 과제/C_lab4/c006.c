@@ -4,7 +4,7 @@
 //no
 //name
 //color
-//type
+//type  
 //상태
 //입은 횟수
 //(추천 계절)
