@@ -56,7 +56,7 @@
 //어떤 변수로 search할건지 물어보기(이름, 색, 계절, 입은횟수 등)
 //그 변수별 search 함수
 //n clothes are found.
-
+ 
 //#save
 //옷장.txt에 변경사항 저장
 
