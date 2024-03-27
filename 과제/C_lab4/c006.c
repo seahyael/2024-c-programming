@@ -13,7 +13,6 @@ struct clothes{
 };
 
 char TNAME[8][30] = {"아우터","레이어드 아우터","긴팔","반팔","나시","바지","치마","원피스"};
-//(신발), (악세사리)
 //char SNAME[5][3] = {"봄","여름","가을","겨울","사계절"};
 
 int loadData(struct clothes* c[]){
@@ -33,6 +32,7 @@ int loadData(struct clothes* c[]){
     return no;
 }
 
+//[1]옷장 보기
 void listClothes(struct clothes* c[], int num){
     printf("\n>> 세아님의 옷장 속 옷들을 불러올게요!\n");
     
@@ -46,13 +46,36 @@ void listClothes(struct clothes* c[], int num){
     }
 }
 
-//#create
-//type 물어보고 그 타입에 추가
-//if(i.type == 0 && i+1.type == 1){
-//    new cloth.no == i+1
-//    for(j = i+1~end){j.no +=1}
-//}
-//end+=1
+
+//#search
+//어떤 변수로 search할건지 물어보기(이름, 색, 계절, 입은횟수 등)
+//그 변수별 search 함수
+//n clothes are found.
+void searchClothes(struct clothes*c[], int num){
+    char search[100];
+    int count = 0;
+    printf("\n>> 옷장 속에 어떤 옷이 있는지 찾아드릴게요!\n");
+    printf(">>> 검색어를 입력해주세요: ");
+    scanf("%s",search);
+
+    for(int i = 0; i<num; i++){
+        if(strstr(c[i]->name, search) != NULL){
+            count++;
+            printf("%s %s\n",c[i]->color, c[i]->name);
+        }
+        else if(strstr(c[i]->color, search) != NULL){
+            count++;
+            printf("%s %s\n",c[i]->color, c[i]->name);
+        }
+    }
+
+    if(count == 0){
+        printf("검색어와 일치하는 옷을 찾지 못했어요.\n");
+    }
+    else {printf("%d개의 옷을 찾았어요!\n",count);}
+}
+
+//[3]추가
 int addCloth(struct clothes*c[], struct clothes*t, int index, int num){
     if(index == num){
         c[index] = t;
@@ -71,7 +94,7 @@ int addCloth(struct clothes*c[], struct clothes*t, int index, int num){
 int createClothes(struct clothes* c[], int num){
     struct clothes* t;
     t = (struct clothes*)malloc(sizeof(struct clothes));
-    printf("\n>>옷장에 새 옷을 추가할게요!\n>>>새 옷의 종류를 골라주세요.\n");
+    printf("\n>> 옷장에 새 옷을 추가할게요!\n>>> 새 옷의 종류를 골라주세요.\n");
     printf("   1.아우터/2.레이어드 아우터/3.긴팔/4.반팔/5.나시/6.바지/7.치마/8.원피스\n");
     printf("새 옷의 종류: ");
     scanf("%d",&t->type);
@@ -80,7 +103,7 @@ int createClothes(struct clothes* c[], int num){
         scanf("%d",&t->type);
     }
     t->type -= 1;
-    printf(">>>색과 이름을 입력해주세요(ex 검정 후드): ");
+    printf(">>> 색과 이름을 입력해주세요(ex 검정 후드): ");
     scanf("%s %s",t->color,t->name);
 
     for(int i = 0; i<num; i++){
@@ -106,11 +129,6 @@ int createClothes(struct clothes* c[], int num){
 //더블 체크 (진짜 지울건지- yes/no)
 //for(i = no+1~end){i.no += 1}
 //end -= 1;
-
-//#search
-//어떤 변수로 search할건지 물어보기(이름, 색, 계절, 입은횟수 등)
-//그 변수별 search 함수
-//n clothes are found.
  
 //#save
 //옷장.txt에 변경사항 저장
@@ -134,6 +152,9 @@ int main() {
 
         if(menu==1){
             listClothes(clist,no);
+        }
+        else if(menu==2){
+            searchClothes(clist,no);
         }
         else if(menu==3){
             no = createClothes(clist,no);
