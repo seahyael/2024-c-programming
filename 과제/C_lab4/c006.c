@@ -34,8 +34,6 @@ int loadData(struct clothes* c[]){
 
 //[1]옷장 보기
 void listClothes(struct clothes* c[], int num){
-    printf("\n>> 세아님의 옷장 속 옷들을 불러올게요!\n");
-    
     for(int i = 0; i<num; i++){
         if(i == 0){
             printf("[%s]\n",TNAME[0]);
@@ -46,12 +44,25 @@ void listClothes(struct clothes* c[], int num){
     }
 }
 
+void callClothes(struct clothes* c[], int num){
+    printf("\n>> 세아님의 옷장 속 옷들을 불러올게요!\n");
+    listClothes(c,num);
+}
 
-//#search
-//어떤 변수로 search할건지 물어보기(이름, 색, 계절, 입은횟수 등)
-//그 변수별 search 함수
-//n clothes are found.
-void searchClothes(struct clothes*c[], int num){
+
+//[2]검색
+void searchClothes(struct clothes*c[],char search int num){
+    for(int i = 0; i<num; i++){
+        if(strstr(c[i]->name, search) != NULL){
+            printf("%s %s\n",c[i]->color, c[i]->name);
+        }
+        else if(strstr(c[i]->color, search) != NULL){
+            printf("%s %s\n",c[i]->color, c[i]->name);
+        }
+    }
+}
+
+void findClothes(struct clothes*c[], int num){
     char search[100];
     int count = 0;
     printf("\n>> 옷장 속에 어떤 옷이 있는지 찾아드릴게요!\n");
@@ -59,20 +70,16 @@ void searchClothes(struct clothes*c[], int num){
     scanf("%s",search);
 
     for(int i = 0; i<num; i++){
-        if(strstr(c[i]->name, search) != NULL){
-            count++;
-            printf("%s %s\n",c[i]->color, c[i]->name);
-        }
-        else if(strstr(c[i]->color, search) != NULL){
-            count++;
-            printf("%s %s\n",c[i]->color, c[i]->name);
-        }
+        if(strstr(c[i]->name, search) != NULL){count++;}
+        else if(strstr(c[i]->color, search) != NULL){count++;}
     }
 
     if(count == 0){
         printf("검색어와 일치하는 옷을 찾지 못했어요.\n");
     }
     else {printf("%d개의 옷을 찾았어요!\n",count);}
+
+    searchClothes(c,search,num);
 }
 
 //[3]추가
@@ -98,7 +105,7 @@ int createClothes(struct clothes* c[], int num){
     printf("   1.아우터/2.레이어드 아우터/3.긴팔/4.반팔/5.나시/6.바지/7.치마/8.원피스\n");
     printf("새 옷의 종류: ");
     scanf("%d",&t->type);
-    while(t->type > 8){
+    while(t->type > 8 || t->type == 0){
         printf("!!숫자가 올바르지 않아요.\n새 옷의 종류: ");
         scanf("%d",&t->type);
     }
@@ -122,6 +129,58 @@ int createClothes(struct clothes* c[], int num){
 //수정할 부분 선택(1. 이름 2. 상태 3. 입은횟수 4.color)
 //수정할 내용 입력
 //udated.
+void updateClothes(struct clothes*c[], int num){
+    char update[100];
+    printf("\n>> 옷의 정보를 수정할게요!\n");
+    printf(">>> 수정하고 싶은 옷의 정확한 이름을 입력해주세요(1.전체 리스트 출력/2.검색): ");
+    scanf("%s",update);
+
+    while(update != "1" && update != "2"){
+        if(update == "1"){
+            listClothes(c,num);
+        }
+        else if(update == "2"){
+            searchClothes(c,update,num);
+        }
+        printf(">>> 수정하고 싶은 옷의 정확한 이름을 입력해주세요(1.전체 리스트 출력/2.검색): ");
+        scanf("%s",update);
+    }
+
+    while(strcmp(c[i]->name,update) != 0){
+        printf("일치하는 옷이 없어요. 정확한 이름을 입력해주세요: ");
+        scanf("%s",update);
+    }
+    
+    int what;
+    printf("   1.종류/2.색상/3.이름\n무엇을 수정할까요? \n");
+    scanf("%d",&what);
+
+    while(what>3 || what == 0){
+        printf("!!숫자가 올바르지 않아요.\n무엇을 수정할까요? ");
+        scanf("%d",&what);
+    }
+
+    char new[100];
+    if(what == 1){
+        printf("새로운 종류를 입력해주세요: ");
+        scanf("%s",new);
+        for(int i = 0; i<8; i++){
+            if(strcmp(TNAME[i],new)==0){
+                c->type = i;
+            }
+        }
+    }
+    else if(what == 2){
+        printf("새로운 색상을 입력해주세요: ");
+        scanf("%s",c->color);
+    }
+    else if(what == 3){
+        printf("새로운 이름을 입력해주세요: ");
+        scanf("%s",c->name);
+    }
+
+    printf("수정되었어요!\n");
+}
 
 //#delete
 //no 선택
@@ -151,13 +210,16 @@ int main() {
 		scanf("%d",&menu);
 
         if(menu==1){
-            listClothes(clist,no);
+            callClothes(clist,no);
         }
         else if(menu==2){
-            searchClothes(clist,no);
+            findClothes(clist,no);
         }
         else if(menu==3){
             no = createClothes(clist,no);
+        }
+        else if(menu==4){
+            updateClothes(clist,no);
         }
         else {
             break;
