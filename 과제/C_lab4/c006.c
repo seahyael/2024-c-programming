@@ -33,7 +33,8 @@ int loadData(struct clothes* c[]){
 }
 
 //[1]옷장 보기
-void listClothes(struct clothes* c[], int num){
+void callClothes(struct clothes* c[], int num){
+    printf("\n>> 세아님의 옷장 속 옷들을 불러올게요!\n");
     for(int i = 0; i<num; i++){
         if(i == 0){
             printf("[%s]\n",TNAME[0]);
@@ -44,14 +45,9 @@ void listClothes(struct clothes* c[], int num){
     }
 }
 
-void callClothes(struct clothes* c[], int num){
-    printf("\n>> 세아님의 옷장 속 옷들을 불러올게요!\n");
-    listClothes(c,num);
-}
-
 
 //[2]검색
-void searchClothes(struct clothes*c[],char search int num){
+void searchClothes(struct clothes*c[],char search[], int num){
     for(int i = 0; i<num; i++){
         if(strstr(c[i]->name, search) != NULL){
             printf("%s %s\n",c[i]->color, c[i]->name);
@@ -129,30 +125,24 @@ int createClothes(struct clothes* c[], int num){
 //수정할 부분 선택(1. 이름 2. 상태 3. 입은횟수 4.color)
 //수정할 내용 입력
 //udated.
+void listClothes(struct clothes* c[], int num){
+    for(int i = 0; i<num; i++){
+        printf("%d. %s/ %s %s\n",i+1,TNAME[c[i]->type],c[i]->color, c[i]->name);
+    }
+}
+
 void updateClothes(struct clothes*c[], int num){
-    char update[100];
+    int update;
     printf("\n>> 옷의 정보를 수정할게요!\n");
-    printf(">>> 수정하고 싶은 옷의 정확한 이름을 입력해주세요(1.전체 리스트 출력/2.검색): ");
-    scanf("%s",update);
+    listClothes(c,num);
+    printf(">>> 수정하고 싶은 옷의 번호를 입력해주세요: ");
+    scanf("%d",&update);
+    update -= 1;
 
-    while(update != "1" && update != "2"){
-        if(update == "1"){
-            listClothes(c,num);
-        }
-        else if(update == "2"){
-            searchClothes(c,update,num);
-        }
-        printf(">>> 수정하고 싶은 옷의 정확한 이름을 입력해주세요(1.전체 리스트 출력/2.검색): ");
-        scanf("%s",update);
-    }
+    printf("%d. %s/ %s %s\n",update+1,TNAME[c[update]->type],c[update]->color, c[update]->name);
 
-    while(strcmp(c[i]->name,update) != 0){
-        printf("일치하는 옷이 없어요. 정확한 이름을 입력해주세요: ");
-        scanf("%s",update);
-    }
-    
     int what;
-    printf("   1.종류/2.색상/3.이름\n무엇을 수정할까요? \n");
+    printf("   1.종류/2.색상/3.이름\n무엇을 수정할까요? ");
     scanf("%d",&what);
 
     while(what>3 || what == 0){
@@ -160,23 +150,21 @@ void updateClothes(struct clothes*c[], int num){
         scanf("%d",&what);
     }
 
-    char new[100];
     if(what == 1){
+        printf("   1.아우터/2.레이어드 아우터/3.긴팔/4.반팔/5.나시/6.바지/7.치마/8.원피스\n");
         printf("새로운 종류를 입력해주세요: ");
-        scanf("%s",new);
-        for(int i = 0; i<8; i++){
-            if(strcmp(TNAME[i],new)==0){
-                c->type = i;
-            }
-        }
+        scanf("%d",&c[update]->type);
+        //update를 어딘가에 따로 저장
+        //update삭제
+        //update 추가
     }
     else if(what == 2){
         printf("새로운 색상을 입력해주세요: ");
-        scanf("%s",c->color);
+        scanf("%s",c[update]->color);
     }
     else if(what == 3){
         printf("새로운 이름을 입력해주세요: ");
-        scanf("%s",c->name);
+        scanf("%s",c[update]->name);
     }
 
     printf("수정되었어요!\n");
