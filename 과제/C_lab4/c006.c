@@ -219,6 +219,16 @@ int deleteClothes(struct clothes*c[],int num){
  
 //#save
 //옷장.txt에 변경사항 저장
+void saveChannels(struct clothes* c[], int size){
+    printf("\n>>지금까지의 변경사항들을 저장할게요! \n");
+	FILE* file;
+	file = fopen("closet.txt", "w");
+	for(int i=0; i<size; i++){
+        fprintf(file, "%d %s %s\n",c[i]->type,c[i]->color,c[i]->name);
+	}
+	fclose(file);	
+    printf("저장되었어요! \n");
+}
 
 //(#추천)
 //날씨별 추천, 계절별 추천, 상황별 추천
@@ -251,6 +261,9 @@ int main() {
         }
         else if(menu==5){
             no = deleteClothes(clist,no);
+        }
+        else if(menu==6){
+            saveChannels(clist,no);
         }
         else {
             break;
