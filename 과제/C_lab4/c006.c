@@ -120,11 +120,7 @@ int createClothes(struct clothes* c[], int num){
     return num+1;
 }
 
-//#update
-//no 선택
-//수정할 부분 선택(1. 이름 2. 상태 3. 입은횟수 4.color)
-//수정할 내용 입력
-//udated.
+//[4]수정
 void listClothes(struct clothes* c[], int num){
     for(int i = 0; i<num; i++){
         printf("%d. %s/ %s %s\n",i+1,TNAME[c[i]->type],c[i]->color, c[i]->name);
@@ -137,6 +133,10 @@ void updateClothes(struct clothes*c[], int num){
     listClothes(c,num);
     printf(">>> 수정하고 싶은 옷의 번호를 입력해주세요: ");
     scanf("%d",&update);
+    while(update>num){
+        printf("!!숫자가 올바르지 않아요.\n수정하고 싶은 옷의 번호를 입력해주세요: ");
+        scanf("%d",&update);
+    }
     update -= 1;
 
     printf("%d. %s/ %s %s\n",update+1,TNAME[c[update]->type],c[update]->color, c[update]->name);
@@ -176,6 +176,41 @@ void updateClothes(struct clothes*c[], int num){
 //더블 체크 (진짜 지울건지- yes/no)
 //for(i = no+1~end){i.no += 1}
 //end -= 1;
+int minusClothes(struct clothes*c[],int num, int delete){
+    if(delete == num){
+        return num-1;
+    }
+    else{
+        c[delete] = c[delete+1];
+        return minusClothes(c,num,delete+1);
+    }
+}
+
+int deleteClothes(struct clothes*c[],int num){
+    int delete;
+    printf("\n>> 옷의 정보를 삭제할게요!\n");
+    listClothes(c,num);
+    printf(">>> 삭제하고 싶은 옷의 번호를 입력해주세요: ");
+    scanf("%d", &delete);
+    while(delete>num){
+        printf("!!숫자가 올바르지 않아요.\n삭제하고 싶은 옷의 번호를 입력해주세요: ");
+        scanf("%d",&delete);
+    }
+    delete -= 1;
+
+    int sure;
+    printf("%d. %s/ %s %s\n",delete+1,TNAME[c[delete]->type],c[delete]->color, c[delete]->name);
+    printf("정말로 삭제할까요(예:0/아니요:1)? ");
+    scanf("%d",&sure);
+    if(sure == 1){
+        return num;
+    }
+    else if(sure == 0){
+        printf("삭제되었어요!\n");
+        return minusClothes(c,num,delete);
+    }
+    return 0;
+}
  
 //#save
 //옷장.txt에 변경사항 저장
@@ -208,6 +243,9 @@ int main() {
         }
         else if(menu==4){
             updateClothes(clist,no);
+        }
+        else if(menu==5){
+            no = deleteClothes(clist,no);
         }
         else {
             break;
