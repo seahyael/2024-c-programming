@@ -2,15 +2,9 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include "c006.h"
 //#include <time.h>
 //랜덤 코디 기능 추가시
-
-struct clothes{
-    char name[100];
-    char color[100];
-    int type;
-    //int season;
-};
 
 char TNAME[8][30] = {"아우터","레이어드 아우터","긴팔","반팔","나시","바지","치마","원피스"};
 //char SNAME[5][3] = {"봄","여름","가을","겨울","사계절"};
@@ -217,8 +211,7 @@ int deleteClothes(struct clothes*c[],int num){
     return 0;
 }
  
-//#save
-//옷장.txt에 변경사항 저장
+//[6]저장
 void saveChannels(struct clothes* c[], int size){
     printf("\n>>지금까지의 변경사항들을 저장할게요! \n");
 	FILE* file;
@@ -234,39 +227,3 @@ void saveChannels(struct clothes* c[], int size){
 //날씨별 추천, 계절별 추천, 상황별 추천
 //현재 날씨, 계절, 상황 입력
 //그 날씨, 계절, 상황에 해당하는 옷 출력
-
-int main() {
-    int no = 0;
-    struct clothes* clist[100];
-    int menu = 0;
-
-    no = loadData(clist);
-
-    while(1)
-	{
-		printf("\n[1]옷장 보기 [2]검색 [3]추가 [4]수정 [5]삭제 [6]저장 [0]프로그램 종료\n> 무엇을 도와드릴까요? ");
-		scanf("%d",&menu);
-
-        if(menu==1){
-            callClothes(clist,no);
-        }
-        else if(menu==2){
-            findClothes(clist,no);
-        }
-        else if(menu==3){
-            no = createClothes(clist,no);
-        }
-        else if(menu==4){
-            updateClothes(clist,no);
-        }
-        else if(menu==5){
-            no = deleteClothes(clist,no);
-        }
-        else if(menu==6){
-            saveChannels(clist,no);
-        }
-        else {
-            break;
-        }
-    }
-}
