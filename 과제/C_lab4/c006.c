@@ -82,7 +82,7 @@ void findClothes(struct clothes*c[], int num){
 int addCloth(struct clothes*c[], struct clothes*t, int index, int num){
     if(index == num){
         c[index] = t;
-        return 0;
+        return num+1;
     }
 
     struct clothes*s;
@@ -127,7 +127,19 @@ void listClothes(struct clothes* c[], int num){
     }
 }
 
+int minusClothes(struct clothes*c[],int num, int delete){
+    if(delete == num){
+        return num-1;
+    }
+    else{
+        c[delete] = c[delete+1];
+        return minusClothes(c,num,delete+1);
+    }
+}
+
 void updateClothes(struct clothes*c[], int num){
+    struct clothes* t;
+    t = (struct clothes*)malloc(sizeof(struct clothes));
     int update;
     printf("\n>> 옷의 정보를 수정할게요!\n");
     listClothes(c,num);
@@ -138,6 +150,7 @@ void updateClothes(struct clothes*c[], int num){
         scanf("%d",&update);
     }
     update -= 1;
+    t = c[update];
 
     printf("%d. %s/ %s %s\n",update+1,TNAME[c[update]->type],c[update]->color, c[update]->name);
 
@@ -153,39 +166,31 @@ void updateClothes(struct clothes*c[], int num){
     if(what == 1){
         printf("   1.아우터/2.레이어드 아우터/3.긴팔/4.반팔/5.나시/6.바지/7.치마/8.원피스\n");
         printf("새로운 종류를 입력해주세요: ");
-        scanf("%d",&c[update]->type);
-        //update를 어딘가에 따로 저장
-        //update삭제
-        //update 추가
+        scanf("%d",&t->type);
+        t->type -= 1;
+        num = minusClothes(c, num, update);
+        for(int i = 0; i<num; i++){
+            if(c[i]->type == t->type && c[i+1]->type != t->type){
+                addCloth(c,t,i+1,num);
+                break;
+            }
+        }
     }
     else if(what == 2){
         printf("새로운 색상을 입력해주세요: ");
-        scanf("%s",c[update]->color);
+        scanf("%s",t->color);
+        c[update] = t;
     }
     else if(what == 3){
         printf("새로운 이름을 입력해주세요: ");
-        scanf("%s",c[update]->name);
+        scanf("%s",t->name);
+        c[update] = t;
     }
 
     printf("수정되었어요!\n");
 }
 
-//#delete
-//no 선택
-//error check (no가 없는 경우)
-//더블 체크 (진짜 지울건지- yes/no)
-//for(i = no+1~end){i.no += 1}
-//end -= 1;
-int minusClothes(struct clothes*c[],int num, int delete){
-    if(delete == num){
-        return num-1;
-    }
-    else{
-        c[delete] = c[delete+1];
-        return minusClothes(c,num,delete+1);
-    }
-}
-
+//[5]삭제
 int deleteClothes(struct clothes*c[],int num){
     int delete;
     printf("\n>> 옷의 정보를 삭제할게요!\n");
