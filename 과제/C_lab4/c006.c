@@ -1,66 +1,219 @@
-//ì˜·ì¥ê´€ë¦¬
+//¿ÊÀå°ü¸®
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include "c006.h"
 
-//#structure clothes
-//no
-//name
-//color
-//type
-//ìƒíƒœ
-//ì…ì€ íšŸìˆ˜
-//(ì¶”ì²œ ê³„ì ˆ)
-//(char ì¶”ì²œê³„ì ˆ = ë´„ , ì—¬ë¦„, ê°€ì„, ê²¨ìš¸, ì‚¬ê³„ì ˆ)
-//(ì¶”ì²œ ë‚ ì”¨)
-//ë§‘ì€ë‚ , ë¹„, ëˆˆ, íë¦°ë‚ 
-//(tpo)
-//ë¸”ë£¨ë°ì´, ìˆ˜ì—…, ë™ì•„ë¦¬, êµíšŒ, ìˆ˜ìš”ì¼, ë²šê½ƒì‚¬ì§„
+int loadData(struct clothes* c[]){
+    int no = 0;
+    FILE* file;
 
-//char cloth type = ì•„ìš°í„°, ì¹˜ë§ˆ, ì›í”¼ìŠ¤, ë°”ì§€, ê¸´íŒ”, ë°˜íŒ”, (ì‹ ë°œ), (ì•…ì„¸ì‚¬ë¦¬)
-//char ìƒíƒœ = ë‚¡ìŒ, ì–¼ë£©ì§, good, best
+    file = fopen("closet.txt", "r");
+    while(!feof(file)){
+        struct clothes* t = (struct clothes*)malloc(sizeof(struct clothes));
+        fscanf(file, "%d %s %s",&t->type,t->color,t->name);
+        c[no] = t;
+        no++;
+    }
+    fclose(file);
 
-//ì˜·ì¥.txt
-//type no, color + name (ex ì²­ìì¼“, í•‘í¬ ì…”ì¸ ), ìƒíƒœ no, ì…ì€ íšŸìˆ˜
+    printf("ÇöÀç %d°³ÀÇ ¿ÊÀÌ ¿ÊÀå¿¡ ÀÖ¾î¿ä!\n",no);
+    return no;
+}
 
-//#load data
-//íŒŒì¼ ì½ê³ , ë³€ìˆ˜ì— ê°ê° ì„ ì–¸
-//cloth ê°œìˆ˜ íŒŒì•…, mainì— return
+//[1]¿ÊÀå º¸±â
+void callClothes(struct clothes* c[], int num){
+    printf("\n>> ¼¼¾Æ´ÔÀÇ ¿ÊÀå ¼Ó ¿ÊµéÀ» ºÒ·¯¿Ã°Ô¿ä!\n");
+    for(int i = 0; i<num; i++){
+        if(i == 0){
+            printf("[%s]\n",TNAME[0]);
+        }
+        else if(c[i-1]->type != c[i]->type){
+            printf("[%s]\n",TNAME[c[i]->type]);}
+        printf("%s %s\n",c[i]->color, c[i]->name);
+    }
+}
 
-//#create
-//type ë¬¼ì–´ë³´ê³  ê·¸ íƒ€ì…ì— ì¶”ê°€
-//if(i.type == 0 && i+1.type == 1){
-//    new cloth.no == i+1
-//    for(j = i+1~end){j.no +=1}
-//}
-//end+=1
 
-//#read
-//type ë³„ë¡œ ì •ë¦¬
-//color + name (ex ì²­ìì¼“, í•‘í¬ ì…”ì¸ ), ìƒíƒœ, ì…ì€ íšŸìˆ˜
-//0.ì•„ìš°í„°
-//0-1.ì²­ìì¼“, ìƒíƒœ : ì¢‹ìŒ, ì…ì€ íšŸìˆ˜ : 20íšŒ, ì¶”ì²œê³„ì ˆ : ë´„, ê°€ì„
-//0-2.ë°”ë§‰, ì¢‹ìŒ, 40íšŒ, ì¶”ì²œê³„ì ˆ : ê²¨ìš¸
+//[2]°Ë»ö
+void searchClothes(struct clothes*c[],char search[], int num){
+    for(int i = 0; i<num; i++){
+        if(strstr(c[i]->name, search) != NULL){
+            printf("%s %s\n",c[i]->color, c[i]->name);
+        }
+        else if(strstr(c[i]->color, search) != NULL){
+            printf("%s %s\n",c[i]->color, c[i]->name);
+        }
+    }
+}
 
-//#update
-//no ì„ íƒ
-//ìˆ˜ì •í•  ë¶€ë¶„ ì„ íƒ(1. ì´ë¦„ 2. ìƒíƒœ 3. ì…ì€íšŸìˆ˜ 4.color)
-//ìˆ˜ì •í•  ë‚´ìš© ì…ë ¥
-//udated.
+void findClothes(struct clothes*c[], int num){
+    char search[100];
+    int count = 0;
+    printf("\n>> ¿ÊÀå ¼Ó¿¡ ¾î¶² ¿ÊÀÌ ÀÖ´ÂÁö Ã£¾Æµå¸±°Ô¿ä!\n");
+    printf(">>> °Ë»ö¾î¸¦ ÀÔ·ÂÇØÁÖ¼¼¿ä: ");
+    scanf("%s",search);
 
-//#delete
-//no ì„ íƒ
-//error check (noê°€ ì—†ëŠ” ê²½ìš°)
-//ë”ë¸” ì²´í¬ (ì§„ì§œ ì§€ìš¸ê±´ì§€- yes/no)
-//for(i = no+1~end){i.no += 1}
-//end -= 1;
+    for(int i = 0; i<num; i++){
+        if(strstr(c[i]->name, search) != NULL){count++;}
+        else if(strstr(c[i]->color, search) != NULL){count++;}
+    }
 
-//#search
-//ì–´ë–¤ ë³€ìˆ˜ë¡œ searchí• ê±´ì§€ ë¬¼ì–´ë³´ê¸°(ì´ë¦„, ìƒ‰, ê³„ì ˆ, ì…ì€íšŸìˆ˜ ë“±)
-//ê·¸ ë³€ìˆ˜ë³„ search í•¨ìˆ˜
-//n clothes are found.
+    if(count == 0){
+        printf("°Ë»ö¾î¿Í ÀÏÄ¡ÇÏ´Â ¿ÊÀ» Ã£Áö ¸øÇß¾î¿ä.\n");
+    }
+    else {printf("%d°³ÀÇ ¿ÊÀ» Ã£¾Ò¾î¿ä!\n",count);}
+
+    searchClothes(c,search,num);
+}
+
+//[3]Ãß°¡
+int addCloth(struct clothes*c[], struct clothes*t, int index, int num){
+    if(index == num){
+        c[index] = t;
+        return num+1;
+    }
+
+    struct clothes*s;
+    s = (struct clothes*)malloc(sizeof(struct clothes));
+    s = c[index];
+    c[index] = t;
+    t = s;
+    index++;
+    return addCloth(c,t,index,num);
+}
+
+int createClothes(struct clothes* c[], int num){
+    struct clothes* t;
+    t = (struct clothes*)malloc(sizeof(struct clothes));
+    printf("\n>> ¿ÊÀå¿¡ »õ ¿ÊÀ» Ãß°¡ÇÒ°Ô¿ä!\n>>> »õ ¿ÊÀÇ Á¾·ù¸¦ °ñ¶óÁÖ¼¼¿ä.\n");
+    printf("   1.¾Æ¿ìÅÍ/2.·¹ÀÌ¾îµå ¾Æ¿ìÅÍ/3.±äÆÈ/4.¹İÆÈ/5.³ª½Ã/6.¹ÙÁö/7.Ä¡¸¶/8.¿øÇÇ½º\n");
+    printf("»õ ¿ÊÀÇ Á¾·ù: ");
+    scanf("%d",&t->type);
+    while(t->type > 8 || t->type == 0){
+        printf("!!¼ıÀÚ°¡ ¿Ã¹Ù¸£Áö ¾Ê¾Æ¿ä.\n»õ ¿ÊÀÇ Á¾·ù: ");
+        scanf("%d",&t->type);
+    }
+    t->type -= 1;
+    printf(">>> »ö°ú ÀÌ¸§À» ÀÔ·ÂÇØÁÖ¼¼¿ä(ex °ËÁ¤ ÈÄµå): ");
+    scanf("%s %s",t->color,t->name);
+
+    for(int i = 0; i<num; i++){
+        if(c[i]->type == t->type && c[i+1]->type != t->type){
+            addCloth(c,t,i+1,num);
+            break;
+        }
+    }
+    printf("%s %sÀÌ(°¡) Ãß°¡µÇ¾ú¾î¿ä!\n",t->color,t->name);
+    
+    return num+1;
+}
+
+//[4]¼öÁ¤
+void listClothes(struct clothes* c[], int num){
+    for(int i = 0; i<num; i++){
+        printf("%d. %s/ %s %s\n",i+1,TNAME[c[i]->type],c[i]->color, c[i]->name);
+    }
+}
+
+int minusClothes(struct clothes*c[],int num, int delete){
+    if(delete == num){
+        return num-1;
+    }
+    else{
+        c[delete] = c[delete+1];
+        return minusClothes(c,num,delete+1);
+    }
+}
+
+void updateClothes(struct clothes*c[], int num){
+    struct clothes* t;
+    t = (struct clothes*)malloc(sizeof(struct clothes));
+    int update;
+    printf("\n>> ¿ÊÀÇ Á¤º¸¸¦ ¼öÁ¤ÇÒ°Ô¿ä!\n");
+    listClothes(c,num);
+    printf(">>> ¼öÁ¤ÇÏ°í ½ÍÀº ¿ÊÀÇ ¹øÈ£¸¦ ÀÔ·ÂÇØÁÖ¼¼¿ä: ");
+    scanf("%d",&update);
+    while(update>num){
+        printf("!!¼ıÀÚ°¡ ¿Ã¹Ù¸£Áö ¾Ê¾Æ¿ä.\n¼öÁ¤ÇÏ°í ½ÍÀº ¿ÊÀÇ ¹øÈ£¸¦ ÀÔ·ÂÇØÁÖ¼¼¿ä: ");
+        scanf("%d",&update);
+    }
+    update -= 1;
+    t = c[update];
+
+    printf("%d. %s/ %s %s\n",update+1,TNAME[c[update]->type],c[update]->color, c[update]->name);
+
+    int what;
+    printf("   1.Á¾·ù/2.»ö»ó/3.ÀÌ¸§\n¹«¾ùÀ» ¼öÁ¤ÇÒ±î¿ä? ");
+    scanf("%d",&what);
+
+    while(what>3 || what == 0){
+        printf("!!¼ıÀÚ°¡ ¿Ã¹Ù¸£Áö ¾Ê¾Æ¿ä.\n¹«¾ùÀ» ¼öÁ¤ÇÒ±î¿ä? ");
+        scanf("%d",&what);
+    }
+
+    if(what == 1){
+        printf("   1.¾Æ¿ìÅÍ/2.·¹ÀÌ¾îµå ¾Æ¿ìÅÍ/3.±äÆÈ/4.¹İÆÈ/5.³ª½Ã/6.¹ÙÁö/7.Ä¡¸¶/8.¿øÇÇ½º\n");
+        printf("»õ·Î¿î Á¾·ù¸¦ ÀÔ·ÂÇØÁÖ¼¼¿ä: ");
+        scanf("%d",&t->type);
+        t->type -= 1;
+        num = minusClothes(c, num, update);
+        for(int i = 0; i<num; i++){
+            if(c[i]->type == t->type && c[i+1]->type != t->type){
+                addCloth(c,t,i+1,num);
+                break;
+            }
+        }
+    }
+    else if(what == 2){
+        printf("»õ·Î¿î »ö»óÀ» ÀÔ·ÂÇØÁÖ¼¼¿ä: ");
+        scanf("%s",t->color);
+        c[update] = t;
+    }
+    else if(what == 3){
+        printf("»õ·Î¿î ÀÌ¸§À» ÀÔ·ÂÇØÁÖ¼¼¿ä: ");
+        scanf("%s",t->name);
+        c[update] = t;
+    }
+
+    printf("¼öÁ¤µÇ¾ú¾î¿ä!\n");
+}
+
+//[5]»èÁ¦
+int deleteClothes(struct clothes*c[],int num){
+    int delete;
+    printf("\n>> ¿ÊÀÇ Á¤º¸¸¦ »èÁ¦ÇÒ°Ô¿ä!\n");
+    listClothes(c,num);
+    printf(">>> »èÁ¦ÇÏ°í ½ÍÀº ¿ÊÀÇ ¹øÈ£¸¦ ÀÔ·ÂÇØÁÖ¼¼¿ä: ");
+    scanf("%d", &delete);
+    while(delete>num){
+        printf("!!¼ıÀÚ°¡ ¿Ã¹Ù¸£Áö ¾Ê¾Æ¿ä.\n»èÁ¦ÇÏ°í ½ÍÀº ¿ÊÀÇ ¹øÈ£¸¦ ÀÔ·ÂÇØÁÖ¼¼¿ä: ");
+        scanf("%d",&delete);
+    }
+    delete -= 1;
+
+    int sure;
+    printf("%d. %s/ %s %s\n",delete+1,TNAME[c[delete]->type],c[delete]->color, c[delete]->name);
+    printf("Á¤¸»·Î »èÁ¦ÇÒ±î¿ä(¿¹:0/¾Æ´Ï¿ä:1)? ");
+    scanf("%d",&sure);
+    if(sure == 1){
+        return num;
+    }
+    else if(sure == 0){
+        printf("»èÁ¦µÇ¾ú¾î¿ä!\n");
+        return minusClothes(c,num,delete);
+    }
+    return 0;
+}
  
-//#save
-//ì˜·ì¥.txtì— ë³€ê²½ì‚¬í•­ ì €ì¥
-
-//(#ì¶”ì²œ)
-//ë‚ ì”¨ë³„ ì¶”ì²œ, ê³„ì ˆë³„ ì¶”ì²œ, ìƒí™©ë³„ ì¶”ì²œ
-//í˜„ì¬ ë‚ ì”¨, ê³„ì ˆ, ìƒí™© ì…ë ¥
-//ê·¸ ë‚ ì”¨, ê³„ì ˆ, ìƒí™©ì— í•´ë‹¹í•˜ëŠ” ì˜· ì¶œë ¥
+//[6]ÀúÀå
+void saveChannels(struct clothes* c[], int size){
+    printf("\n>>Áö±İ±îÁöÀÇ º¯°æ»çÇ×µéÀ» ÀúÀåÇÒ°Ô¿ä! \n");
+	FILE* file;
+	file = fopen("closet.txt", "w");
+	for(int i=0; i<size; i++){
+        fprintf(file, "%d %s %s\n",c[i]->type,c[i]->color,c[i]->name);
+	}
+	fclose(file);	
+    printf("ÀúÀåµÇ¾ú¾î¿ä! \n");
+}
