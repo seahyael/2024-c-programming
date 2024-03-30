@@ -3,11 +3,6 @@
 #include <stdlib.h>
 #include <string.h>
 #include "c006.h"
-//#include <time.h>
-//랜덤 코디 기능 추가시
-
-char TNAME[8][30] = {"아우터","레이어드 아우터","긴팔","반팔","나시","바지","치마","원피스"};
-//char SNAME[5][3] = {"봄","여름","가을","겨울","사계절"};
 
 int loadData(struct clothes* c[]){
     int no = 0;
@@ -222,8 +217,3 @@ void saveChannels(struct clothes* c[], int size){
 	fclose(file);	
     printf("저장되었어요! \n");
 }
-
-//(#추천)
-//날씨별 추천, 계절별 추천, 상황별 추천
-//현재 날씨, 계절, 상황 입력
-//그 날씨, 계절, 상황에 해당하는 옷 출력
